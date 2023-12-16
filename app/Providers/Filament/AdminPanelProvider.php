@@ -26,8 +26,11 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->default()
             ->id('admin')
             ->path('admin')
+            ->login()
+            ->registration()
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Slate,
@@ -46,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Employee Management',
                 'System Management',
-                'User Management'
+                'User Management',
             ])
             ->favicon(asset('images/favicon.ico'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -70,6 +73,9 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
                 VerifyIsAdmin::class
+            ])
+            ->authMiddleware([
+                Authenticate::class,
             ]);
     }
 }
