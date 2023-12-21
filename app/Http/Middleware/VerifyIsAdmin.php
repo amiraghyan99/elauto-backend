@@ -20,6 +20,6 @@ class VerifyIsAdmin
             return $next($request);
         }
 
-        return redirect('/app');
+        return redirect('/admin/login');
     }
 }

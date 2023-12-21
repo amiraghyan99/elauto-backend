@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CityResource\Pages;
-use App\Filament\Resources\CityResource\RelationManagers;
 use App\Filament\Resources\CityResource\RelationManagers\EmployeesRelationManager;
 use App\Models\City;
 use Filament\Forms;
@@ -14,8 +13,6 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CityResource extends Resource
 {
@@ -26,8 +23,6 @@ class CityResource extends Resource
     protected static ?string $navigationLabel = 'City';
 
     protected static ?string $modelLabel = 'City';
-
-    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?int $navigationSort = 3;
 
@@ -45,7 +40,7 @@ class CityResource extends Resource
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
-                    ])
+                    ]),
             ]);
     }
 
@@ -92,14 +87,14 @@ class CityResource extends Resource
                     ->schema([
                         TextEntry::make('state.name')->label('State Name'),
                         TextEntry::make('name')->label('City name'),
-                    ])->columns(2)
+                    ])->columns(2),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            EmployeesRelationManager::class
+            EmployeesRelationManager::class,
         ];
     }
 

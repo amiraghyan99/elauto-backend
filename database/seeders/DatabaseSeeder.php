@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Department;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,14 +16,19 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
+        $user = \App\Models\User::factory()->create([
             'name' => 'Admin User',
             'email' => 'admin@example.com',
-            'is_admin' => true
         ]);
+        $role = Role::create([
+            'name' => 'admin',
+            'guard_name' => 'panel',
+        ]);
+        $user->assignRole($role);
 
-        $this->call(CountrySeeder::class);
-        $this->call(StateSeeder::class);
-        $this->call(CitySeeder::class);
+        //        $this->call(CountrySeeder::class);
+        //        $this->call(StateSeeder::class);
+        //        $this->call(CitySeeder::class);
+        $this->call(CarSeeder::class);
     }
 }

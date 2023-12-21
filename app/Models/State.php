@@ -13,7 +13,7 @@ class State extends Model
 
     protected $fillable = [
         'country_id',
-        'name'
+        'name',
     ];
 
     public function country(): BelongsTo
@@ -21,10 +21,6 @@ class State extends Model
         return $this->belongsTo(Country::class);
     }
 
-    public function employees(): HasMany
-    {
-        return $this->hasMany(Employee::class);
-    }
     public function cities(): HasMany
     {
         return $this->hasMany(City::class);

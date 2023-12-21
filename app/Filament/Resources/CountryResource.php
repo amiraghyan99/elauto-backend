@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
 use App\Filament\Resources\CountryResource\RelationManagers\EmployeesRelationManager;
 use App\Filament\Resources\CountryResource\RelationManagers\StatesRelationManager;
 use App\Models\Country;
@@ -15,8 +14,6 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CountryResource extends Resource
 {
@@ -25,10 +22,6 @@ class CountryResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
     protected static ?string $navigationLabel = 'Country';
-
-    protected static ?string $modelLabel = 'Employees Country';
-
-    protected static ?string $navigationGroup = 'System Management';
 
     protected static ?int $navigationSort = 1;
 
@@ -48,7 +41,7 @@ class CountryResource extends Resource
                             ->required()
                             ->numeric()
                             ->maxLength(5),
-                    ])
+                    ]),
             ]);
     }
 
@@ -101,7 +94,7 @@ class CountryResource extends Resource
                             'Country Code'
                         ),
                         TextEntry::make('phonecode')->label('Phone Code'),
-                    ])->columns(2)
+                    ])->columns(2),
             ]);
     }
 
@@ -109,7 +102,7 @@ class CountryResource extends Resource
     {
         return [
             StatesRelationManager::class,
-            EmployeesRelationManager::class
+            EmployeesRelationManager::class,
         ];
     }
 

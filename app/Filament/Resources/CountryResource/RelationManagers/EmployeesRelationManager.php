@@ -11,8 +11,6 @@ use Filament\Forms\Set;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 
 class EmployeesRelationManager extends RelationManager
@@ -89,7 +87,7 @@ class EmployeesRelationManager extends RelationManager
                             ->native(false)
                             ->displayFormat('d/m/Y')
                             ->required(),
-                    ])->columns(2)
+                    ])->columns(2),
 
             ]);
     }

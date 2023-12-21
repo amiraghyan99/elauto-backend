@@ -2,16 +2,17 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\EnsureIsAdmin;
-use App\Http\Middleware\VerifyIsAdmin;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Table;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -23,6 +24,24 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
+    public function boot(): void
+    {
+        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+            $switch
+                ->locales(['en', 'hy', 'ru'])
+                ->circular()
+                ->flagsOnly();
+        });
+        Table::configureUsing(function (Table $table): void {
+            $table
+                ->filtersLayout(FiltersLayout::AboveContentCollapsible)
+                ->paginationPageOptions([10, 25, 50, 100]);
+        });
+        TextColumn::configureUsing(function (TextColumn $column): void {
+            $column->toggleable();
+        });
+    }
+
     public function panel(Panel $panel): Panel
     {
         return $panel
@@ -31,25 +50,23 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->registration()
+            ->authGuard('panel')
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Slate,
                 'info' => Color::Blue,
-                'primary' => Color::Indigo,
+                'primary' => Color::Amber,
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
             ->userMenuItems([
-                MenuItem::make()
-                    ->label('Dashboard')
-                    ->icon('heroicon-o-cog-6-tooth')
-                    ->url('/app')
+
             ])
-            ->font('Inter')
+            ->navigationItems([
+
+            ])
             ->navigationGroups([
-                'Employee Management',
-                'System Management',
-                'User Management',
+                'Cars Management',
             ])
             ->favicon(asset('images/favicon.ico'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -72,7 +89,6 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                VerifyIsAdmin::class
             ])
             ->authMiddleware([
                 Authenticate::class,
