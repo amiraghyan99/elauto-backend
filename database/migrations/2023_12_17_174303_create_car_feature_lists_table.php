@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('car_features', function (Blueprint $table) {
+        Schema::create('car_feature_lists', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\CarModel::class)->index();
+            $table->foreignIdFor(\App\Models\CarModelList::class)->index();
 
             $table->string('class')->nullable();
             $table->string('fuel_type')->nullable();

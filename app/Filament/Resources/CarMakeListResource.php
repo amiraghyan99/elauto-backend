@@ -2,37 +2,35 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CarModelResource\Pages;
-use App\Models\CarModel;
+use App\Filament\Resources\CarMakeListResource\Pages;
+use App\Models\CarMakeList;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class CarModelResource extends Resource
+class CarMakeListResource extends Resource
 {
-    protected static ?string $model = CarModel::class;
+    protected static ?string $model = CarMakeList::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Cars Management';
+    protected static ?string $navigationGroup = 'Cars Data List';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('car_make_id')
-                    ->relationship('carMake', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('car_types_id')
-                    ->numeric(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(200),
                 Forms\Components\TextInput::make('slug')
                     ->required()
                     ->maxLength(200),
+                Forms\Components\Textarea::make('logo')
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -40,13 +38,6 @@ class CarModelResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('carMake.name')
-                    ->numeric()
-                    ->searchable()
-                    ->sortable(),
-                //                Tables\Columns\TextColumn::make('car_types_id')
-                //                    ->numeric()
-                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
@@ -75,9 +66,9 @@ class CarModelResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCarModels::route('/'),
-            'create' => Pages\CreateCarModel::route('/create'),
-            'edit' => Pages\EditCarModel::route('/{record}/edit'),
+            'index' => Pages\ListCarMakeLists::route('/'),
+            'create' => Pages\CreateCarMakeList::route('/create'),
+            'edit' => Pages\EditCarMakeList::route('/{record}/edit'),
         ];
     }
 }

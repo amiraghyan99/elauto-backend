@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class CarMake extends Model
+class CarMakeList extends Model
 {
     use HasFactory, HasSlug;
 
@@ -23,6 +23,6 @@ class CarMake extends Model
 
     public function carModels(): HasMany
     {
-        return $this->hasMany(CarModel::class);
+        return $this->hasMany(CarModelList::class);
     }
 }

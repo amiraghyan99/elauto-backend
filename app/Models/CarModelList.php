@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class CarModel extends Model
+class CarModelList extends Model
 {
     use HasFactory, HasSlug;
 
@@ -22,13 +22,13 @@ class CarModel extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function carMake(): BelongsTo
+    public function carMakeList(): BelongsTo
     {
-        return $this->belongsTo(CarMake::class);
+        return $this->belongsTo(CarMakeList::class);
     }
 
     public function carFeatures(): HasOne
     {
-        return $this->hasOne(CarFeatures::class);
+        return $this->hasOne(CarFeatureList::class);
     }
 }

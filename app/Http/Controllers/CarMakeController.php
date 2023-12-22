@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CarMake;
+use App\Models\CarMakeList;
 use Illuminate\Http\Request;
 
 class CarMakeController extends Controller
@@ -34,7 +34,7 @@ class CarMakeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CarMake $carMake)
+    public function show(CarMakeList $carMake)
     {
         //
     }
@@ -42,7 +42,7 @@ class CarMakeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CarMake $carMake)
+    public function edit(CarMakeList $carMake)
     {
         //
     }
@@ -50,7 +50,7 @@ class CarMakeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CarMake $carMake)
+    public function update(Request $request, CarMakeList $carMake)
     {
         //
     }
@@ -58,7 +58,7 @@ class CarMakeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CarMake $carMake)
+    public function destroy(CarMakeList $carMake)
     {
         //
     }

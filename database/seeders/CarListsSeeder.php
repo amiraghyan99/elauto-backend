@@ -4,22 +4,22 @@ namespace Database\Seeders;
 
 use App\Http\Integrations\Cars\CarsConnector;
 use App\Http\Integrations\Cars\Requests\AllCarsRequest;
-use App\Models\CarMake;
+use App\Models\CarMakeList;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class CarSeeder extends Seeder
+class CarListsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $this->setCarMakes();
+        $this->fetchCarsData();
         //        $this->setCarModelsAndFeatures();
     }
 
-    private function setCarMakes(): void
+    private function fetchCarsData(): void
     {
         try {
             $connector = new CarsConnector();
@@ -29,7 +29,7 @@ class CarSeeder extends Seeder
 
             foreach ($paginator->items() as $item) {
 
-                $carMake = CarMake::query()->firstOrCreate(
+                $carMake = CarMakeList::query()->firstOrCreate(
                     ['name' => $item['make']],
                     ['name' => $item['make']]
                 );

@@ -52,6 +52,8 @@ class CarsConnector extends Connector implements HasPagination
         {
             protected ?int $perPageLimit = 100;
 
+            protected ?int $maxPages = 2;
+
             public function isLastPage(Response $response): bool
             {
                 return empty($response->array('results'));

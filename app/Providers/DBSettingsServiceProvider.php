@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\CarFeatures;
-use App\Models\CarMake;
-use App\Models\CarModel;
+use App\Models\CarFeatureList;
+use App\Models\CarMakeList;
+use App\Models\CarModelList;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -33,9 +33,9 @@ class DBSettingsServiceProvider extends ServiceProvider
 
         Relation::enforceMorphMap([
             'user' => User::class,
-            'car_make' => CarMake::class,
-            'car_model' => CarModel::class,
-            'car_features' => CarFeatures::class,
+            'car_make' => CarMakeList::class,
+            'car_model' => CarModelList::class,
+            'car_features' => CarFeatureList::class,
         ]);
     }
 }

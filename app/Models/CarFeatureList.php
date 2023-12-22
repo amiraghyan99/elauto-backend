@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CarFeatures extends Model
+class CarFeatureList extends Model
 {
     public $timestamps = false;
 
@@ -13,11 +13,11 @@ class CarFeatures extends Model
 
     public function carModel(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(CarModel::class);
+        return $this->belongsTo(CarModelList::class);
     }
 
     public function modelName(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(CarModel::class)->select('name');
+        return $this->belongsTo(CarModelList::class)->select('name');
     }
 }
