@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class CarFeatureList extends Model
+class CarDetail extends Model
 {
     public $timestamps = false;
 
     use HasFactory;
 
-    public function model(): BelongsTo
+    public function car(): BelongsTo
     {
-        return $this->belongsTo(CarModelList::class, 'car_model_list_id', 'id');
+        return $this->belongsTo(Car::class, 'car_id', 'id');
     }
 }

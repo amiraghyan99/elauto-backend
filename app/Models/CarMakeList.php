@@ -21,8 +21,18 @@ class CarMakeList extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function carModels(): HasMany
+    public function models(): HasMany
     {
-        return $this->hasMany(CarModelList::class);
+        return $this->hasMany(CarModelList::class, 'car_make_list_id');
+    }
+
+    public function cars()
+    {
+        return $this->hasManyThrough(
+            Car::class,
+            CarModelList::class,
+            'car_make_list_id',
+            'car_model_list_id'
+        );
     }
 }

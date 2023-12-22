@@ -34,12 +34,12 @@ class CarListsSeeder extends Seeder
                     ['name' => $item['make']]
                 );
 
-                $model = $carMake->carModels()->firstOrCreate(
+                $model = $carMake->models()->firstOrCreate(
                     ['name' => $item['model']],
                     ['name' => $item['model']]
                 );
 
-                $model->carFeatures()->create([
+                $model->features()->create([
                     'class' => $item['vclass'],
                     'fuel_type' => $item['fueltype'],
                     'fuel_type_dscr' => $item['fueltype1'],
@@ -57,6 +57,7 @@ class CarListsSeeder extends Seeder
             }
         } catch (\Saloon\Exceptions\Request\ClientException $exception) {
         } catch (\Exception $exception) {
+            dd($exception);
             DB::rollBack();
         }
         DB::commit();

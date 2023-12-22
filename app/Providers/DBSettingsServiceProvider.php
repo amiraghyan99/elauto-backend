@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Car;
+use App\Models\CarDetail;
 use App\Models\CarFeatureList;
 use App\Models\CarMakeList;
 use App\Models\CarModelList;
@@ -35,7 +37,13 @@ class DBSettingsServiceProvider extends ServiceProvider
             'user' => User::class,
             'car_make' => CarMakeList::class,
             'car_model' => CarModelList::class,
-            'car_features' => CarFeatureList::class,
+            'car_feature' => CarFeatureList::class,
+            'car' => Car::class,
+            'car_detail' => CarDetail::class,
         ]);
+
+        //        $model = CarModelList::with('cars.details')->find(98);
+        //        $x = $model->features;
+        //        dd($x);
     }
 }
