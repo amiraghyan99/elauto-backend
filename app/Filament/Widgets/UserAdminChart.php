@@ -11,6 +11,8 @@ class UserAdminChart extends ChartWidget
 {
     protected static ?string $heading = 'Users Chart';
 
+    protected static ?string $pollingInterval = '30s';
+
     protected static ?int $sort = 2;
 
     protected function getData(): array

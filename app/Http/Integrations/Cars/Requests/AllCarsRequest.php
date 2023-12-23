@@ -23,8 +23,6 @@ class AllCarsRequest extends Request implements Paginatable
 
     protected function defaultQuery(): array
     {
-        return [
-
-        ];
+        return [];
     }
 }

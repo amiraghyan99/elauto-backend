@@ -10,6 +10,30 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
+/**
+ * App\Models\CarModelList
+ *
+ * @property int $id
+ * @property int $car_make_list_id
+ * @property int|null $car_type_list_id
+ * @property string $name
+ * @property string $slug
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Car> $cars
+ * @property-read int|null $cars_count
+ * @property-read \App\Models\CarFeatureList|null $features
+ * @property-read \App\Models\CarMakeList $make
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereCarMakeListId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereCarTypeListId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereSlug($value)
+ *
+ * @mixin \Eloquent
+ */
 class CarModelList extends Model
 {
     use HasFactory, HasSlug;

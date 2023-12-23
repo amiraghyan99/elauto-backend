@@ -41,9 +41,5 @@ class DBSettingsServiceProvider extends ServiceProvider
             'car' => Car::class,
             'car_detail' => CarDetail::class,
         ]);
-
-        //        $model = CarModelList::with('cars.details')->find(98);
-        //        $x = $model->features;
-        //        dd($x);
     }
 }

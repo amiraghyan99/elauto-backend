@@ -14,12 +14,8 @@ class CarsConnector extends Connector implements HasPagination
 {
     use AcceptsJson;
 
-    protected function defaultQuery(): array
+    public function __construct(public int $year)
     {
-        return [
-            'where' => 'year>2010',
-            'order_by' => 'id ASC, make ASC',
-        ];
     }
 
     /**
@@ -30,33 +26,17 @@ class CarsConnector extends Connector implements HasPagination
         return 'https://public.opendatasoft.com/api/explore/v2.1/catalog/datasets/all-vehicles-model/records';
     }
 
-    /**
-     * Default headers for every request
-     */
-    protected function defaultHeaders(): array
-    {
-        return [];
-    }
-
-    /**
-     * Default HTTP client options
-     */
-    protected function defaultConfig(): array
-    {
-        return [];
-    }
-
     public function paginate(Request $request): OffsetPaginator
     {
         return new class(connector: $this, request: $request) extends OffsetPaginator
         {
             protected ?int $perPageLimit = 100;
 
-            protected ?int $maxPages = 2;
+            protected ?int $maxPages = 98;
 
             public function isLastPage(Response $response): bool
             {
-                return empty($response->array('results'));
+                return $this->getCurrentPage() === $this->maxPages;
             }
 
             protected function getPageItems(Response $response, Request $request): array
@@ -73,5 +53,32 @@ class CarsConnector extends Connector implements HasPagination
                 return 98;
             }
         };
+    }
+
+    protected function defaultQuery(): array
+    {
+        $currentYear = $this->year;
+        $nextYear = $this->year++;
+
+        return [
+            'where' => "year>={$currentYear} AND year<= {$nextYear}",
+            'order_by' => 'id ASC, make ASC',
+        ];
+    }
+
+    /**
+     * Default headers for every request
+     */
+    protected function defaultHeaders(): array
+    {
+        return [];
+    }
+
+    /**
+     * Default HTTP client options
+     */
+    protected function defaultConfig(): array
+    {
+        return [];
     }
 }
