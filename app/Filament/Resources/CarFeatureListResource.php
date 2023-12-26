@@ -62,7 +62,7 @@ class CarFeatureListResource extends Resource
                     ->label('ID')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('model.make.name')
+                Tables\Columns\TextColumn::make('make.name')
                     ->label('Make Name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('model.name')

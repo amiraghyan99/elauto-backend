@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Support\Carbon;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 /**
  * App\Models\Car
@@ -27,15 +30,20 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Car whereId($value)
  * @method static Builder|Car whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Car extends Model
 {
+    use BelongsToThrough;
     use HasFactory;
 
-    public function make(): BelongsTo
+    public function make(): \Znck\Eloquent\Relations\BelongsToThrough
     {
-        return $this->model->make();
+        return $this->belongsToThrough(
+            CarMakeList::class,
+            CarModelList::class,
+            'car_make_list_id',
+        );
     }
 
     public function model(): BelongsTo
@@ -48,8 +56,12 @@ class Car extends Model
         return $this->hasOne(CarDetail::class, 'car_id');
     }
 
-    public function features(): HasOne
+    public function features(): HasOneThrough
     {
-        return $this->model->features();
+        return $this->hasOneThrough(
+            CarFeatureList::class,
+            CarModelList::class,
+            'car_make_list_id',
+        );
     }
 }

@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(CarModelList::class);
+            $table->decimal('price', 10)->nullable();
             $table->timestamps();
         });
     }

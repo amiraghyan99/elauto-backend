@@ -4,15 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CarResource\Api\Transformers\CarTransformer;
 use App\Filament\Resources\CarResource\Pages;
-use App\Filament\Resources\CarResource\RelationManagers;
 use App\Models\Car;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CarResource extends Resource
 {
@@ -26,9 +26,55 @@ class CarResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('car_model_list_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make('Make and Mode')
+                    ->schema([
+                        Forms\Components\Select::make('car_make_list_id')
+                            ->label('Car Make')
+                            ->relationship(name: 'make', titleAttribute: 'name')
+                            ->searchable()
+                            ->afterStateUpdated(function (Set $set) {
+                                $set('car_model_list_id', null);
+                            })
+                            ->live()
+                            ->preload(),
+
+                        Forms\Components\Select::make('car_model_list_id')
+                            ->label('Car Model')
+                            ->visible(fn(Get $get) => filled($get('car_make_list_id')))
+                            ->relationship(
+                                name: 'model',
+                                titleAttribute: 'name',
+                                modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query->where('car_make_list_id', $get('car_make_list_id'))
+                            )
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+                    ])->columns(),
+                Forms\Components\Section::make('Color')
+                    ->schema([
+                        Forms\Components\ColorPicker::make('color')
+                            ->label('Color')
+                            ->hex()
+                            ->hexColor()
+                            ->required(),
+                    ])->columns(6),
+                Forms\Components\Section::make('Price')
+                    ->schema([
+                        Forms\Components\TextInput::make('price')
+                            ->label('Price')
+                            ->numeric()
+                            ->inputMode('decimal')
+                            ->prefix('$')
+                            ->nullable(),
+                    ])->columns(6),
+                Forms\Components\Section::make('Images')
+                    ->schema([
+                        Forms\Components\SpatieMediaLibraryFileUpload::make('images')
+                            ->required()
+                            ->label('Images')
+                            ->multiple()
+                    ]),
+
             ]);
     }
 
@@ -40,7 +86,7 @@ class CarResource extends Resource
         return $table
             ->columns([
 
-                Tables\Columns\TextColumn::make('model.make.name')
+                Tables\Columns\TextColumn::make('make.name')
                     ->searchable()
                     ->sortable(),
 
@@ -48,21 +94,20 @@ class CarResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-
-                Tables\Columns\TextColumn::make('model.features.class')
+                Tables\Columns\TextColumn::make('features.class')
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('model.features.fuel_type')
+                Tables\Columns\TextColumn::make('features.fuel_type')
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('model.features.transmission')
+                Tables\Columns\TextColumn::make('features.transmission')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('model.features.drive')
+                Tables\Columns\TextColumn::make('features.drive')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('model.features.engine')
+                Tables\Columns\TextColumn::make('features.engine')
                     ->searchable()
                     ->numeric(1)
                     ->sortable(),
@@ -112,8 +157,8 @@ class CarResource extends Resource
         ];
     }
 
-    public static function getApiTransformer(): string
-    {
-        return CarTransformer::class;
-    }
+    //    public static function getApiTransformer(): string
+    //    {
+    //        return CarTransformer::class;
+    //    }
 }

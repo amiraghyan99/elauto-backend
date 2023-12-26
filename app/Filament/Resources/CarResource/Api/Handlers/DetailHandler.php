@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources\CarResource\Api\Handlers;
 
-use App\Filament\Resources\SettingResource;
 use App\Filament\Resources\CarResource;
 use Rupadana\ApiService\Http\Handlers;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class DetailHandler extends Handlers
 {
-    public static string | null $uri = '/{id}';
-    public static string | null $resource = CarResource::class;
+    public static ?string $uri = '/{slug}';
 
+    public static ?string $resource = CarResource::class;
+
+    protected static string $keyName = 'slug';
 
     public function handler($id)
     {
@@ -22,10 +23,12 @@ class DetailHandler extends Handlers
         )
             ->first();
 
-        if (!$query) return static::sendNotFoundResponse();
+        if (! $query) {
+            return static::sendNotFoundResponse();
+        }
 
         $transformer = static::getApiTransformer();
-        
+
         return new $transformer($query);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Znck\Eloquent\Traits\BelongsToThrough;
 
 /**
  * App\Models\CarFeatureList
@@ -48,6 +49,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class CarFeatureList extends Model
 {
+    use BelongsToThrough;
     use HasFactory;
 
     public $timestamps = false;
@@ -57,8 +59,12 @@ class CarFeatureList extends Model
         return $this->belongsTo(CarModelList::class, 'car_model_list_id');
     }
 
-    public function make(): BelongsTo
+    public function make(): \Znck\Eloquent\Relations\BelongsToThrough
     {
-        return $this->model->make();
+        return $this->belongsToThrough(
+            CarMakeList::class,
+            CarModelList::class,
+            'car_make_list_id',
+        );
     }
 }

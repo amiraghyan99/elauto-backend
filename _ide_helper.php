@@ -19578,6 +19578,54 @@
      
 }
 
+    namespace Rupadana\ApiService\Facades { 
+            /**
+     * 
+     *
+     * @see \Rupadana\ApiService\ApiService
+     */ 
+        class ApiService {
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getKeyName()
+        {
+                        return \Rupadana\ApiService\ApiService::getKeyName();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function getResource()
+        {
+                        return \Rupadana\ApiService\ApiService::getResource();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function routes()
+        {
+                        return \Rupadana\ApiService\ApiService::routes();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function allRoutes($router)
+        {
+                        return \Rupadana\ApiService\ApiService::allRoutes($router);
+        }
+         
+    }
+     
+}
+
     namespace Saloon\Laravel\Facades { 
             /**
      * 
@@ -26745,6 +26793,7 @@ namespace  {
             class Vite extends \Illuminate\Support\Facades\Vite {}
             class Debugbar extends \Barryvdh\Debugbar\Facades\Debugbar {}
             class Livewire extends \Livewire\Livewire {}
+            class ApiService extends \Rupadana\ApiService\Facades\ApiService {}
             class Saloon extends \Saloon\Laravel\Facades\Saloon {}
             class Flare extends \Spatie\LaravelIgnition\Facades\Flare {}
      
