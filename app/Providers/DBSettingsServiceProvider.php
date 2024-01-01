@@ -7,6 +7,7 @@ use App\Models\CarDetail;
 use App\Models\CarFeatureList;
 use App\Models\CarMakeList;
 use App\Models\CarModelList;
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -40,6 +41,7 @@ class DBSettingsServiceProvider extends ServiceProvider
             'car_feature' => CarFeatureList::class,
             'car' => Car::class,
             'car_detail' => CarDetail::class,
+            'category' => Category::class,
         ]);
     }
 }

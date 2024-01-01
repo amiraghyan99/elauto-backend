@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\EnsureEmailIsVerified;
+use App\Http\Middleware\VerifyIsAdmin;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -9,11 +11,13 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Filament\Widgets;
+use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -26,31 +30,22 @@ class AdminPanelProvider extends PanelProvider
 {
     public function boot(): void
     {
-        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
-            $switch
-                ->locales(['en', 'hy', 'ru'])
-                ->circular()
-                ->flagsOnly();
-        });
-        Table::configureUsing(function (Table $table): void {
-            $table
-                ->filtersLayout(FiltersLayout::AboveContentCollapsible)
-                ->paginationPageOptions([10, 25, 50, 100]);
-        });
-        TextColumn::configureUsing(function (TextColumn $column): void {
-            $column->toggleable();
-        });
+
     }
 
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->plugin(
+                SpatieLaravelTranslatablePlugin::make()
+                    ->defaultLocales(['en', 'ru', 'hy']),
+            )
             ->default()
             ->id('admin')
             ->path('admin')
             ->login()
-            ->registration()
             ->authGuard('panel')
+
             ->colors([
                 'danger' => Color::Red,
                 'gray' => Color::Slate,
@@ -62,11 +57,9 @@ class AdminPanelProvider extends PanelProvider
             ->userMenuItems([
 
             ])
-            ->navigationItems([
-
-            ])
             ->navigationGroups([
-                'Cars Management',
+                'Cars List',
+                'All Cars'
             ])
             ->favicon(asset('images/favicon.ico'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
@@ -89,6 +82,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+
             ])
             ->authMiddleware([
                 Authenticate::class,

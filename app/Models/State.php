@@ -22,7 +22,6 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, City> $cities
  * @property-read int|null $cities_count
  * @property-read Country $country
- *
  * @method static Builder|State newModelQuery()
  * @method static Builder|State newQuery()
  * @method static Builder|State query()
@@ -31,7 +30,6 @@ use Illuminate\Support\Carbon;
  * @method static Builder|State whereId($value)
  * @method static Builder|State whereName($value)
  * @method static Builder|State whereUpdatedAt($value)
- *
  * @mixin Eloquent
  */
 class State extends Model

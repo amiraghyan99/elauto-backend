@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
  * App\Models\CarMakeList
@@ -22,7 +24,6 @@ use Spatie\Sluggable\SlugOptions;
  * @property-read int|null $cars_count
  * @property-read Collection<int, \App\Models\CarModelList> $models
  * @property-read int|null $models_count
- *
  * @method static Builder|CarMakeList newModelQuery()
  * @method static Builder|CarMakeList newQuery()
  * @method static Builder|CarMakeList query()
@@ -30,12 +31,14 @@ use Spatie\Sluggable\SlugOptions;
  * @method static Builder|CarMakeList whereLogo($value)
  * @method static Builder|CarMakeList whereName($value)
  * @method static Builder|CarMakeList whereSlug($value)
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CarFeatureList[] $features
+ * @property-read int|null $features_count
  * @mixin \Eloquent
  */
 class CarMakeList extends Model
 {
     use HasFactory, HasSlug;
+    use HasRelationships;
 
     public $timestamps = false;
 
@@ -48,16 +51,24 @@ class CarMakeList extends Model
 
     public function models(): HasMany
     {
+
         return $this->hasMany(CarModelList::class, 'car_make_list_id');
     }
 
-    public function cars(): HasManyThrough
+    public function features(): HasManyDeep
     {
-        return $this->hasManyThrough(
-            Car::class,
-            CarModelList::class,
-            'car_make_list_id',
-            'car_model_list_id'
+        return $this->hasManyDeep(
+            CarFeatureList::class,
+            [CarModelList::class],
+            ['car_make_list_id', 'car_model_list_id']
+        );
+    }
+
+    public function cars(): HasManyDeep
+    {
+        return $this->hasManyDeepFromRelations(
+            $this->features()->select(),
+            (new CarFeatureList)->cars()
         );
     }
 }

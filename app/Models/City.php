@@ -16,7 +16,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read State $state
- *
  * @method static \Illuminate\Database\Eloquent\Builder|City newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|City newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|City query()
@@ -25,7 +24,6 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|City whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|City whereStateId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|City whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class City extends Model

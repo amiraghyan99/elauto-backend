@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
  * App\Models\CarModelList
@@ -22,7 +24,6 @@ use Spatie\Sluggable\SlugOptions;
  * @property-read int|null $cars_count
  * @property-read \App\Models\CarFeatureList|null $features
  * @property-read \App\Models\CarMakeList $make
- *
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList query()
@@ -31,13 +32,13 @@ use Spatie\Sluggable\SlugOptions;
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereSlug($value)
- *
+ * @property-read int|null $features_count
  * @mixin \Eloquent
  */
 class CarModelList extends Model
 {
     use HasFactory, HasSlug;
-
+    use HasRelationships;
     public $timestamps = false;
 
     public function getSlugOptions(): SlugOptions
@@ -52,13 +53,17 @@ class CarModelList extends Model
         return $this->belongsTo(CarMakeList::class, 'car_make_list_id');
     }
 
-    public function features(): HasOne
+    public function features(): HasMany
     {
-        return $this->hasOne(CarFeatureList::class, 'car_model_list_id');
+        return $this->hasMany(CarFeatureList::class, 'car_model_list_id');
     }
 
-    public function cars(): HasMany
+    public function cars(): HasManyDeep
     {
-        return $this->hasMany(Car::class, 'car_model_list_id');
+        return $this->hasManyDeep(
+            Car::class,
+            [CarFeatureList::class],
+            ['car_model_list_id', 'car_feature_list_id']
+        );
     }
 }

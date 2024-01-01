@@ -2,23 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CarMakeListResource\Pages;
-use App\Filament\Resources\CarMakeListResource\RelationManagers;
-use App\Models\CarMakeList;
+use App\Filament\Resources\CategoryResource\Api\Transformers\CategoryTransformer;
+use App\Filament\Resources\CategoryResource\Pages;
+use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CarMakeListResource extends Resource
+class CategoryResource extends Resource
 {
-    protected static ?string $model = CarMakeList::class;
+    use Translatable;
+
+    protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Cars';
 
     public static function form(Form $form): Form
     {
@@ -26,13 +29,9 @@ class CarMakeListResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->maxLength(50),
+                Forms\Components\TextInput::make('description')
                     ->maxLength(200),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(200),
-                Forms\Components\Textarea::make('logo')
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
             ]);
     }
 
@@ -42,14 +41,23 @@ class CarMakeListResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                Tables\Columns\TextColumn::make('description')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -68,9 +76,14 @@ class CarMakeListResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCarMakeLists::route('/'),
-            'create' => Pages\CreateCarMakeList::route('/create'),
-            'edit' => Pages\EditCarMakeList::route('/{record}/edit'),
+            'index' => Pages\ListCategories::route('/'),
+            'create' => Pages\CreateCategory::route('/create'),
+            'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
+    }
+
+    public static function getApiTransformer(): string
+    {
+        return CategoryTransformer::class;
     }
 }

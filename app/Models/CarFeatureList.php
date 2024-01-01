@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Znck\Eloquent\Traits\BelongsToThrough;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Staudenmeir\EloquentHasManyDeep\HasOneDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
  * App\Models\CarFeatureList
@@ -26,7 +28,6 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @property int $start_stop
  * @property int $mpgdata
  * @property-read \App\Models\CarModelList|null $model
- *
  * @method static Builder|CarFeatureList newModelQuery()
  * @method static Builder|CarFeatureList newQuery()
  * @method static Builder|CarFeatureList query()
@@ -44,12 +45,14 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @method static Builder|CarFeatureList whereTimeCharge240($value)
  * @method static Builder|CarFeatureList whereTransmission($value)
  * @method static Builder|CarFeatureList whereYear($value)
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Car> $cars
+ * @property-read int|null $cars_count
+ * @property-read \App\Models\CarMakeList|null $make
  * @mixin \Eloquent
  */
 class CarFeatureList extends Model
 {
-    use BelongsToThrough;
+    use HasRelationships;
     use HasFactory;
 
     public $timestamps = false;
@@ -59,12 +62,15 @@ class CarFeatureList extends Model
         return $this->belongsTo(CarModelList::class, 'car_model_list_id');
     }
 
-    public function make(): \Znck\Eloquent\Relations\BelongsToThrough
+    public function make(): HasOneDeep
     {
-        return $this->belongsToThrough(
-            CarMakeList::class,
-            CarModelList::class,
-            'car_make_list_id',
+        return $this->hasOneDeepFromReverse(
+            (new CarMakeList())->features()
         );
+    }
+
+    public function cars(): HasMany
+    {
+        return $this->hasMany(Car::class);
     }
 }

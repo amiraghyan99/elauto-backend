@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\CarFeatureList;
+use App\Models\CarMakeList;
 use App\Models\CarModelList;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,8 +16,8 @@ return new class extends Migration
     {
         Schema::create('cars', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(CarModelList::class);
-            $table->decimal('price', 10)->nullable();
+            $table->foreignIdFor(CarFeatureList::class);
+
             $table->timestamps();
         });
     }

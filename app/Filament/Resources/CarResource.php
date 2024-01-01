@@ -2,118 +2,86 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CarResource\Api\Transformers\CarTransformer;
 use App\Filament\Resources\CarResource\Pages;
+use App\Filament\Resources\CarResource\RelationManagers;
 use App\Models\Car;
+use App\Models\CarFeatureList;
+use App\Models\Color;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Notifications\Actions\Action;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
 class CarResource extends Resource
 {
     protected static ?string $model = Car::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Cars';
+    protected static ?string $navigationLabel = 'All cars';
 
-    protected static ?string $navigationGroup = 'Cars Data List';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Make and Mode')
-                    ->schema([
-                        Forms\Components\Select::make('car_make_list_id')
-                            ->label('Car Make')
-                            ->relationship(name: 'make', titleAttribute: 'name')
-                            ->searchable()
-                            ->afterStateUpdated(function (Set $set) {
-                                $set('car_model_list_id', null);
-                            })
-                            ->live()
-                            ->preload(),
-
-                        Forms\Components\Select::make('car_model_list_id')
-                            ->label('Car Model')
-                            ->visible(fn(Get $get) => filled($get('car_make_list_id')))
-                            ->relationship(
-                                name: 'model',
-                                titleAttribute: 'name',
-                                modifyQueryUsing: fn(Builder $query, Get $get): Builder => $query->where('car_make_list_id', $get('car_make_list_id'))
-                            )
-                            ->searchable()
-                            ->preload()
-                            ->required(),
-                    ])->columns(),
-                Forms\Components\Section::make('Color')
-                    ->schema([
-                        Forms\Components\ColorPicker::make('color')
-                            ->label('Color')
-                            ->hex()
-                            ->hexColor()
-                            ->required(),
-                    ])->columns(6),
-                Forms\Components\Section::make('Price')
-                    ->schema([
-                        Forms\Components\TextInput::make('price')
-                            ->label('Price')
-                            ->numeric()
-                            ->inputMode('decimal')
-                            ->prefix('$')
-                            ->nullable(),
-                    ])->columns(6),
-                Forms\Components\Section::make('Images')
-                    ->schema([
-                        Forms\Components\SpatieMediaLibraryFileUpload::make('images')
-                            ->required()
-                            ->label('Images')
-                            ->multiple()
-                    ]),
+                Forms\Components\Select::make('car_make')
+                    ->label('Car Make Name')
+                    ->relationship('model.make', 'name')
+                    ->afterStateUpdated(fn(Set $set) => $set('car_model', null))
+                    ->searchable()
+                    ->dehydrated(false)
+                    ->preload()
+                    ->required()
+                    ->live(),
+//
+                Forms\Components\Select::make('car_model')
+                    ->label('Car Model Name')
+                    ->relationship(
+                        name: 'feature.model',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: fn(Builder $query, Get $get) => $query
+                            ->select(['id', 'name'])
+                            ->where('car_make_list_id', $get('car_make'))
+                    )
+                    ->searchable()
+                    ->dehydrated(false)
+                    ->preload()
+                    ->live()
+                    ->visible(fn(Get $get) => $get('car_make'))
+                    ->required(),
 
             ]);
     }
 
-    /**
-     * @throws \Exception
-     */
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-
-                Tables\Columns\TextColumn::make('make.name')
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('model.make.name')
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('model.name')
                     ->searchable()
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('features.class')
+                Tables\Columns\TextColumn::make('feature.class')
+                    ->label('Class')
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('features.fuel_type')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('feature.year')
+                    ->label('Year')
                     ->sortable(),
-
-                Tables\Columns\TextColumn::make('features.transmission')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('features.drive')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('features.engine')
-                    ->searchable()
-                    ->numeric(1)
-                    ->sortable(),
-
-                Tables\Columns\ColorColumn::make('details.color'),
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -122,17 +90,26 @@ class CarResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ColorColumn::make('detail.color')
+                    ->label('Color')
+                    ->copyable()
+                    ->copyMessage('Color code copied')
+                    ->copyMessageDuration(1500),
+//                    ->tooltip(fn(Car $record): string => "{$record->detail->color}"),
+                Tables\Columns\TextColumn::make('detail.price')
+                    ->copyable(true)
+                    ->copyMessage('Color code copied')
+                    ->copyMessageDuration(1500)
+                    ->label('Price')
+                    ->prefix('$')
+                    ->weight(FontWeight::Bold)
+                    ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('color')
-                    ->relationship('details', 'color', fn(Builder $query) => $query->distinct('color'))
-                    ->multiple()
-                    ->preload(),
+                //
             ])
-//            ->filtersLayout(Tables\Enums\FiltersLayout::Modal)
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -156,9 +133,4 @@ class CarResource extends Resource
             'edit' => Pages\EditCar::route('/{record}/edit'),
         ];
     }
-
-    //    public static function getApiTransformer(): string
-    //    {
-    //        return CarTransformer::class;
-    //    }
 }

@@ -16,7 +16,7 @@ class VerifyIsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user() && Auth::user()->is_admin) {
+        if (Auth::user() && Auth::user()->hasRole('admin', 'panel')) {
             return $next($request);
         }
 

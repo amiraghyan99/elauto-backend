@@ -1,6 +1,7 @@
 <?php
 
 use App\Filament\Resources\CarResource\Api\CarApiService;
+use App\Filament\Resources\CategoryResource\Api\CategoryApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,5 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-
-CarApiService::routes();
+//
+//CarApiService::routes();
+CategoryApiService::routes();

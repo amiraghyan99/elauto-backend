@@ -9,9 +9,11 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use function Laravel\Prompts\warning;
 
 class UserResource extends Resource
 {
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
@@ -25,7 +27,7 @@ class UserResource extends Resource
 
     public static function getNavigationBadgeColor(): string|array|null
     {
-        return static::getModel()::count() > 10 ? 'warning' : 'success';
+        return 'success';
     }
 
     public static function form(Form $form): Form

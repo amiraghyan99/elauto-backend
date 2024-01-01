@@ -27,6 +27,9 @@ class CarListsSeeder extends Seeder
         }
     }
 
+    /**
+     * @throws \Throwable
+     */
     private function fetchCarsData(int $year): void
     {
         DB::beginTransaction();

@@ -3,20 +3,24 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CarModelListResource\Pages;
+use App\Filament\Resources\CarModelListResource\RelationManagers;
 use App\Models\CarModelList;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CarModelListResource extends Resource
 {
     protected static ?string $model = CarModelList::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Cars';
 
-    protected static ?string $navigationGroup = 'Cars Data List';
+    protected static ?string $navigationParentItem = 'Car Make Lists';
 
     public static function form(Form $form): Form
     {
@@ -40,17 +44,14 @@ class CarModelListResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('carMakeList.name')
-                    ->label('Make Name')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('car_make_list_id')
+                    ->numeric()
                     ->sortable(),
-                //                Tables\Columns\TextColumn::make('car_type_list_id')
-                //                    ->numeric()
-                //                    ->sortable(),
+                Tables\Columns\TextColumn::make('car_type_list_id')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Model Name')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
             ])
@@ -59,7 +60,6 @@ class CarModelListResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
