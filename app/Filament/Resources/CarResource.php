@@ -28,6 +28,7 @@ class CarResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+        
             ->schema([
                 Forms\Components\Select::make('car_make')
                     ->label('Car Make Name')
@@ -38,7 +39,6 @@ class CarResource extends Resource
                     ->preload()
                     ->required()
                     ->live(),
-                //
                 Forms\Components\Select::make('car_model')
                     ->label('Car Model Name')
                     ->relationship(
