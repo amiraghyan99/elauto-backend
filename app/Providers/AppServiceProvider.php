@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\CarMakeList;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;

@@ -4,9 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Car;
-use App\Models\CarModelList;
-use Faker\Core\Color;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -33,8 +30,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CarListsSeeder::class);
         $this->call(CarsSeeder::class);
-
-
 
     }
 }

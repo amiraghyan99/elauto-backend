@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
@@ -24,6 +23,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read int|null $cars_count
  * @property-read \App\Models\CarFeatureList|null $features
  * @property-read \App\Models\CarMakeList $make
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList query()
@@ -32,13 +32,16 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CarModelList whereSlug($value)
+ *
  * @property-read int|null $features_count
+ *
  * @mixin \Eloquent
  */
 class CarModelList extends Model
 {
     use HasFactory, HasSlug;
     use HasRelationships;
+
     public $timestamps = false;
 
     public function getSlugOptions(): SlugOptions

@@ -28,6 +28,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property int $start_stop
  * @property int $mpgdata
  * @property-read \App\Models\CarModelList|null $model
+ *
  * @method static Builder|CarFeatureList newModelQuery()
  * @method static Builder|CarFeatureList newQuery()
  * @method static Builder|CarFeatureList query()
@@ -45,15 +46,17 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|CarFeatureList whereTimeCharge240($value)
  * @method static Builder|CarFeatureList whereTransmission($value)
  * @method static Builder|CarFeatureList whereYear($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Car> $cars
  * @property-read int|null $cars_count
  * @property-read \App\Models\CarMakeList|null $make
+ *
  * @mixin \Eloquent
  */
 class CarFeatureList extends Model
 {
-    use HasRelationships;
     use HasFactory;
+    use HasRelationships;
 
     public $timestamps = false;
 

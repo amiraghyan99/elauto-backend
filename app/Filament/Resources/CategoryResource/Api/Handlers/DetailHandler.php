@@ -2,17 +2,17 @@
 
 namespace App\Filament\Resources\CategoryResource\Api\Handlers;
 
-use App\Filament\Resources\SettingResource;
 use App\Filament\Resources\CategoryResource;
 use Rupadana\ApiService\Http\Handlers;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class DetailHandler extends Handlers
 {
-    public static string | null $uri = '/{slug}';
-    public static string | null $resource = CategoryResource::class;
-    protected static string $keyName = 'slug';
+    public static ?string $uri = '/{slug}';
 
+    public static ?string $resource = CategoryResource::class;
+
+    protected static string $keyName = 'slug';
 
     public function handler($slug)
     {
@@ -23,7 +23,9 @@ class DetailHandler extends Handlers
         )
             ->first();
 
-        if (!$query) return static::sendNotFoundResponse();
+        if (! $query) {
+            return static::sendNotFoundResponse();
+        }
 
         $transformer = static::getApiTransformer();
 

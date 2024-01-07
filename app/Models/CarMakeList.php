@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
@@ -24,6 +23,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read int|null $cars_count
  * @property-read Collection<int, \App\Models\CarModelList> $models
  * @property-read int|null $models_count
+ *
  * @method static Builder|CarMakeList newModelQuery()
  * @method static Builder|CarMakeList newQuery()
  * @method static Builder|CarMakeList query()
@@ -31,8 +31,10 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|CarMakeList whereLogo($value)
  * @method static Builder|CarMakeList whereName($value)
  * @method static Builder|CarMakeList whereSlug($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\CarFeatureList[] $features
  * @property-read int|null $features_count
+ *
  * @mixin \Eloquent
  */
 class CarMakeList extends Model

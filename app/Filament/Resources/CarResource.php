@@ -3,31 +3,27 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CarResource\Pages;
-use App\Filament\Resources\CarResource\RelationManagers;
 use App\Models\Car;
-use App\Models\CarFeatureList;
 use App\Models\Color;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
-use Filament\Notifications\Actions\Action;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 
 class CarResource extends Resource
 {
     protected static ?string $model = Car::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Cars';
-    protected static ?string $navigationLabel = 'All cars';
 
+    protected static ?string $navigationGroup = 'Cars';
+
+    protected static ?string $navigationLabel = 'All cars';
 
     public static function form(Form $form): Form
     {
@@ -36,19 +32,19 @@ class CarResource extends Resource
                 Forms\Components\Select::make('car_make')
                     ->label('Car Make Name')
                     ->relationship('model.make', 'name')
-                    ->afterStateUpdated(fn(Set $set) => $set('car_model', null))
+                    ->afterStateUpdated(fn (Set $set) => $set('car_model', null))
                     ->searchable()
                     ->dehydrated(false)
                     ->preload()
                     ->required()
                     ->live(),
-//
+                //
                 Forms\Components\Select::make('car_model')
                     ->label('Car Model Name')
                     ->relationship(
                         name: 'feature.model',
                         titleAttribute: 'name',
-                        modifyQueryUsing: fn(Builder $query, Get $get) => $query
+                        modifyQueryUsing: fn (Builder $query, Get $get) => $query
                             ->select(['id', 'name'])
                             ->where('car_make_list_id', $get('car_make'))
                     )
@@ -56,7 +52,7 @@ class CarResource extends Resource
                     ->dehydrated(false)
                     ->preload()
                     ->live()
-                    ->visible(fn(Get $get) => $get('car_make'))
+                    ->visible(fn (Get $get) => $get('car_make'))
                     ->required(),
 
             ]);
@@ -95,7 +91,7 @@ class CarResource extends Resource
                     ->copyable()
                     ->copyMessage('Color code copied')
                     ->copyMessageDuration(1500),
-//                    ->tooltip(fn(Car $record): string => "{$record->detail->color}"),
+                //                    ->tooltip(fn(Car $record): string => "{$record->detail->color}"),
                 Tables\Columns\TextColumn::make('detail.price')
                     ->copyable(true)
                     ->copyMessage('Color code copied')

@@ -2,9 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\EnsureEmailIsVerified;
-use App\Http\Middleware\VerifyIsAdmin;
-use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -13,11 +10,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Colors\Color;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Table;
 use Filament\Widgets;
-use Illuminate\Auth\MustVerifyEmail;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -59,7 +52,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Cars List',
-                'All Cars'
+                'All Cars',
             ])
             ->favicon(asset('images/favicon.ico'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

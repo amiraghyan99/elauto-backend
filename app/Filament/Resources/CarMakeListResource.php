@@ -3,21 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CarMakeListResource\Pages;
-use App\Filament\Resources\CarMakeListResource\RelationManagers;
 use App\Models\CarMakeList;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CarMakeListResource extends Resource
 {
     protected static ?string $model = CarMakeList::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationGroup = 'Cars';
 
     public static function form(Form $form): Form

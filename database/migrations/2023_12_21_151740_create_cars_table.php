@@ -1,8 +1,6 @@
 <?php
 
 use App\Models\CarFeatureList;
-use App\Models\CarMakeList;
-use App\Models\CarModelList;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

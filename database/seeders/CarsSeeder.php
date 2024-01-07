@@ -16,7 +16,7 @@ class CarsSeeder extends Seeder
         foreach (range(1, 10000) as $id) {
             $model = CarModelList::query()->where('id', $id);
 
-            if (!$model->exists()) {
+            if (! $model->exists()) {
                 return;
             }
 

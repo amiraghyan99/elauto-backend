@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Filament\Resources\CategoryResource\Api\Transformers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CategoryTransformer extends JsonResource
 {
-
     /**
      * Transform the resource into an array.
      *

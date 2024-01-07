@@ -21,6 +21,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property Carbon|null $updated_at
  * @property-read CarDetail|null $details
  * @property-read CarModelList|null $model
+ *
  * @method static Builder|Car newModelQuery()
  * @method static Builder|Car newQuery()
  * @method static Builder|Car query()
@@ -28,13 +29,17 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|Car whereCreatedAt($value)
  * @method static Builder|Car whereId($value)
  * @method static Builder|Car whereUpdatedAt($value)
+ *
  * @property int $car_feature_list_id
  * @property-read \App\Models\CarFeatureList|null $feature
  * @property-read \App\Models\CarMakeList|null $make
+ *
  * @method static Builder|Car whereCarFeatureListId($value)
+ *
  * @property-read \App\Models\CarDetail|null $detail
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
+ *
  * @mixin Eloquent
  */
 class Car extends Model
@@ -46,6 +51,7 @@ class Car extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
     public function feature(): BelongsTo
     {
         return $this->belongsTo(CarFeatureList::class, 'car_feature_list_id');
