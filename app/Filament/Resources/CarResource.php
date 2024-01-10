@@ -28,7 +28,7 @@ class CarResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-        
+
             ->schema([
                 Forms\Components\Select::make('car_make')
                     ->label('Car Make Name')
@@ -42,7 +42,7 @@ class CarResource extends Resource
                 Forms\Components\Select::make('car_model')
                     ->label('Car Model Name')
                     ->relationship(
-                        name: 'feature.model',
+                        name: 'trim.model',
                         titleAttribute: 'name',
                         modifyQueryUsing: fn (Builder $query, Get $get) => $query
                             ->select(['id', 'name'])
@@ -72,10 +72,10 @@ class CarResource extends Resource
                 Tables\Columns\TextColumn::make('model.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('feature.class')
+                Tables\Columns\TextColumn::make('trim.class')
                     ->label('Class')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('feature.year')
+                Tables\Columns\TextColumn::make('trim.year')
                     ->label('Year')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

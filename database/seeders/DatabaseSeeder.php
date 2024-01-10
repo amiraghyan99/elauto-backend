@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
@@ -22,14 +23,30 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin User',
             'email' => 'admin@example.com',
         ]);
-        $role = Role::create([
+
+        $adminRole = Role::create([
             'name' => 'admin',
             'guard_name' => 'panel',
         ]);
-        $user->assignRole($role);
 
-        $this->call(CarListsSeeder::class);
-        $this->call(CarsSeeder::class);
+        // $customerRole = Role::create([
+        //     'name' => 'customer',
+        // ]);
+
+        $adminPermission = Permission::create([
+            'name' => 'access',
+            'guard_name' => 'panel'
+        ]);
+
+        $adminRole->givePermissionTo($adminPermission);
+
+        $user->assignRole(
+            $adminRole,
+            // $customerRole
+        );
+
+        // $this->call(CarListsSeeder::class);
+        // $this->call(CarsSeeder::class);
 
     }
 }

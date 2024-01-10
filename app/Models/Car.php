@@ -20,8 +20,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read CarDetail|null $details
- * @property-read CarModelList|null $model
- *
+ * @property-read CarModel|null $model
  * @method static Builder|Car newModelQuery()
  * @method static Builder|Car newQuery()
  * @method static Builder|Car query()
@@ -29,17 +28,15 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|Car whereCreatedAt($value)
  * @method static Builder|Car whereId($value)
  * @method static Builder|Car whereUpdatedAt($value)
- *
- * @property int $car_feature_list_id
- * @property-read \App\Models\CarFeatureList|null $feature
- * @property-read \App\Models\CarMakeList|null $make
- *
+ * @property int $car_trim_list_id
+ * @property-read \App\Models\CarTrim|null $feature
+ * @property-read \App\Models\CarMake|null $make
  * @method static Builder|Car whereCarFeatureListId($value)
- *
  * @property-read \App\Models\CarDetail|null $detail
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
- *
+ * @property-read \App\Models\CarTrim|null $trim
+ * @method static Builder|Car whereCarTrimListId($value)
  * @mixin Eloquent
  */
 class Car extends Model
@@ -52,22 +49,22 @@ class Car extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function feature(): BelongsTo
+    public function trim(): BelongsTo
     {
-        return $this->belongsTo(CarFeatureList::class, 'car_feature_list_id');
+        return $this->belongsTo(CarTrim::class, 'car_trim_list_id');
     }
 
     public function model(): HasOneDeep
     {
         return $this->hasOneDeepFromReverse(
-            (new CarModelList())->cars()
+            (new CarModel())->cars()
         );
     }
 
     public function make(): HasOneDeep
     {
         return $this->hasOneDeepFromReverse(
-            (new CarMakeList())->cars()
+            (new CarMake())->cars()
         );
     }
 
