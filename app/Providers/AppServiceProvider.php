@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\TranslationsHelper;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;

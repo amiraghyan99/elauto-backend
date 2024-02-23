@@ -14,10 +14,16 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(\App\Models\CarModel::class)->index();
 
-            $table->unsignedInteger('year');
             $table->string('name');
+            $table->string('slug');
+
             $table->text('description')->nullable();
+
+            $table->unsignedInteger('year')->nullable();
+            $table->unsignedSmallInteger('horsepower')->nullable();
+            $table->unsignedSmallInteger('mileage')->nullable();
             
+            $table->string('fuel')->nullable();
             $table->unsignedInteger('msrp')->nullable();
             $table->unsignedInteger('invoice')->nullable();
 

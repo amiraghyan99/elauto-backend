@@ -16,7 +16,9 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Car::class)->constrained()->cascadeOnDelete();
 
-            $table->string('color')->default('#FFFFFF');
+            $table->string('color_name')->nullable();
+            $table->string('color_hex')->default('#FFFFFF');
+
             $table->unsignedBigInteger('price')->nullable();
 
         });

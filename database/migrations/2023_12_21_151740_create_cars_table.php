@@ -15,6 +15,22 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(CarTrim::class);
 
+            $table->string('name');
+            $table->string('slug');
+            
+            $table->text('description')->nullable();
+
+            $table->unsignedInteger('year')->nullable();
+            $table->timestamp('date_of_first_entry_into_service')->nullable();
+
+            $table->unsignedDecimal('price');
+            $table->unsignedTinyInteger('places')->nullable();
+            $table->unsignedTinyInteger('doors')->nullable();
+            
+            $table->unsignedSmallInteger('horsepower')->nullable();
+            $table->unsignedSmallInteger('mileage')->nullable();
+
+            // $table->foreignIdFor(Currency::class)->constrained();
             $table->timestamps();
         });
     }

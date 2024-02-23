@@ -14,9 +14,7 @@ class CarsConnector extends Connector implements HasPagination
 {
     use AcceptsJson;
 
-    public function __construct(public int $year)
-    {
-    }
+
 
     /**
      * The Base URL of the API
@@ -28,15 +26,13 @@ class CarsConnector extends Connector implements HasPagination
 
     public function paginate(Request $request): OffsetPaginator
     {
-        return new class(connector: $this, request: $request) extends OffsetPaginator
-        {
-            protected ?int $perPageLimit = 100;
+        return new class (connector: $this, request: $request) extends OffsetPaginator {
 
-            protected ?int $maxPages = 2;
+            protected ?int $perPageLimit = 100;
 
             public function isLastPage(Response $response): bool
             {
-                return $this->getCurrentPage() === $this->maxPages;
+                return empty($response->array('results'));
             }
 
             protected function getPageItems(Response $response, Request $request): array
@@ -44,25 +40,17 @@ class CarsConnector extends Connector implements HasPagination
                 return $response->array('results');
             }
 
-            public function getTotalPages(Response $response): int
-            {
-                if (Arr::exists($response->array(), 'total_count')) {
-                    return ceil($response->array('total_count') / $this->perPageLimit);
-                }
-
-                return 98;
-            }
         };
     }
 
     protected function defaultQuery(): array
     {
-        $currentYear = $this->year;
-        $nextYear = $this->year++;
+        // $currentYear = $this->year;
+        // $nextYear = $this->year++;
 
         return [
-            'where' => "year>={$currentYear} AND year<= {$nextYear}",
-            'order_by' => 'id ASC, make ASC',
+            // 'where' => "year>={$currentYear} AND year<= {$nextYear}",
+            // 'order_by' => 'id ASC, make ASC',
         ];
     }
 

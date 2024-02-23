@@ -34,6 +34,10 @@ class CarModel extends Model
     {
         return $this->hasMany(CarTrim::class);
     }
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(CarType::class);
+    }
 
     public function cars(): HasManyDeep
     {

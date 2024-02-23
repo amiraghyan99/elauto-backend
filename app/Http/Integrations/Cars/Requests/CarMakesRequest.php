@@ -24,8 +24,10 @@ class CarMakesRequest extends Request implements Paginatable
     protected function defaultQuery(): array
     {
         return [
-            'select' => 'make',
-            'group_by' => 'make',
+            'select' => 'make, model, basemodel',
+            'group_by' => 'make, model, basemodel',
+            'where' => 'fueltype like "Electricity"',
+            'order_by' => 'make ASC, basemodel ASC'
         ];
     }
 }
